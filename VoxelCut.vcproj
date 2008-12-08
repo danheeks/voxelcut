@@ -49,7 +49,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(ProjectDir)&quot;;&quot;C:\Program Files\Microsoft DirectX SDK (March 2008)\Include&quot;;&quot;$(WXWIN)\lib\vc_lib\mswd&quot;;&quot;$(WXWIN)\include&quot;;$(PYTHON_INCLUDE)"
+				AdditionalIncludeDirectories="&quot;$(ProjectDir)&quot;;&quot;$(DXSDK_DIR)\Include&quot;;&quot;$(WXWIN)\lib\vc_lib\mswd&quot;;&quot;$(WXWIN)\include&quot;;&quot;$(PYTHON_INCLUDE)&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CRT_SECURE_NO_WARNINGS;__WXMSW__;__WXDEBUG__;_WINDOWS;NOPCH;WNT"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -134,7 +134,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;$(ProjectDir)&quot;;&quot;C:\Program Files\Microsoft DirectX SDK (March 2008)\Include&quot;;&quot;$(WXWIN)\include&quot;;&quot;$(PYTHON_INCLUDE)&quot;;&quot;$(WXWIN)\lib\vc_lib\msw&quot;"
+				AdditionalIncludeDirectories="&quot;$(ProjectDir)&quot;;&quot;$(DXSDK_DIR)\Include&quot;;&quot;$(WXWIN)\include&quot;;&quot;$(PYTHON_INCLUDE)&quot;;&quot;$(WXWIN)\lib\vc_lib\msw&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CRT_SECURE_NO_WARNINGS;__WXMSW__"
 				RuntimeLibrary="2"
 				DefaultCharIsUnsigned="true"
