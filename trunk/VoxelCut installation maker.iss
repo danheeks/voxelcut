@@ -25,10 +25,10 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "C:\Users\Dan\Desktop\VoxelCut\VoxelCut.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\Dan\Desktop\VoxelCut\redir.py"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\Dan\Desktop\VoxelCut\run.py"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\Dan\Desktop\VoxelCut\test.tap"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\HeeksSoftware\VoxelCut\VoxelCut.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\HeeksSoftware\VoxelCut\redir.py"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\HeeksSoftware\VoxelCut\run.py"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\HeeksSoftware\VoxelCut\test.tap"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Program Files\Microsoft Visual Studio 9.0\VC\redist\x86\Microsoft.VC90.CRT\*"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
