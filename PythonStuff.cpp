@@ -1,7 +1,7 @@
 // PythonStuff.cpp
+#include "wx/wx.h"
 #include "PythonStuff.h"
 #include "voxlap5.h"
-#include "wx/wx.h"
 #include <wx/stdpaths.h>
 
 #if _DEBUG
