@@ -1,8 +1,5 @@
 // VCApp.cpp
 
-#include "wx/wxprec.h"
-#include "wx/splitter.h"
-
 #include "VCApp.h"
 #include "VCFrame.h"
 #include "SolidView.h"

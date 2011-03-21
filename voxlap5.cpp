@@ -5073,7 +5073,7 @@ void loadnul (dpoint3d *ipo, dpoint3d *ist, dpoint3d *ihe, dpoint3d *ifo)
 	vbit[vbiti>>5] = (1<<vbiti)-1;
 
 		//Blow out sphere and stick you inside map
-	vx5.colfunc = jitcolfunc; vx5.curcol = 0x80704030;
+	vx5.colfunc = jitcolfunc; vx5.curcol = 0x50205020;
 
 	lp0.x = VSID*.5-90; lp0.y = VSID*.5-90; lp0.z = MAXZDIM*.5-45;
 	lp1.x = VSID*.5+90; lp1.y = VSID*.5+90; lp1.z = MAXZDIM*.5+45;

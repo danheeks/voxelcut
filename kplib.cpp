@@ -37,6 +37,7 @@ credits.
 #include <sys/stat.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string>
 
 #if defined(__POWERPC__)
 #define BIGENDIAN 1
@@ -2982,6 +2983,29 @@ void kzfindfilestart (const char *st)
 	srchstat = 0; srchzoff = kzlastfnam; srchdoff = kzdirnamhead;
 }
 
+
+static std::string str_for_Ttc;
+
+const char* Ttc(const wchar_t* str)
+{
+	// convert a wchar_t* string into a char* string
+	str_for_Ttc.clear();
+	while (*str)
+		str_for_Ttc.push_back((char) *str++);
+	return str_for_Ttc.c_str();
+}
+
+static std::wstring wstr_for_Ttc;
+
+const wchar_t* Ctt(const char* str)
+{
+	// convert a char* string into a wchar_t* string
+	wstr_for_Ttc.clear();
+	while (*str)
+		wstr_for_Ttc.push_back((wchar_t) *str++);
+	return wstr_for_Ttc.c_str();
+}
+
 long kzfindfile (char *filnam)
 {
 	long i;
@@ -3012,14 +3036,14 @@ kzfindfile_beg:;
 			strcpy(&filnam[i],findata.name);
 			if (findata.attrib&16) strcat(&filnam[i],"\\");
 #elif defined(_WIN32)
-			hfind = FindFirstFile(newildst,&findata);
+			hfind = FindFirstFile(Ctt(newildst),&findata);
 			if (hfind == INVALID_HANDLE_VALUE)
 				{ if (!kzhashbuf) return(0); srchstat = 2; continue; }
 			if (findata.dwFileAttributes&FILE_ATTRIBUTE_HIDDEN) continue;
 			i = wildstpathleng;
 			if (findata.dwFileAttributes&FILE_ATTRIBUTE_DIRECTORY)
 				if ((findata.cFileName[0] == '.') && (!findata.cFileName[1])) continue;
-			strcpy(&filnam[i],findata.cFileName);
+			strcpy(&filnam[i],Ttc(findata.cFileName));
 			if (findata.dwFileAttributes&FILE_ATTRIBUTE_DIRECTORY) strcat(&filnam[i],"\\");
 #else
 			if (!hfind)
@@ -3057,7 +3081,7 @@ kzfindfile_beg:;
 			i = wildstpathleng;
 			if (findata.dwFileAttributes&FILE_ATTRIBUTE_DIRECTORY)
 				if ((findata.cFileName[0] == '.') && (!findata.cFileName[1])) continue;
-			strcpy(&filnam[i],findata.cFileName);
+			strcpy(&filnam[i],Ttc(findata.cFileName));
 			if (findata.dwFileAttributes&FILE_ATTRIBUTE_DIRECTORY) strcat(&filnam[i],"\\");
 #else
 			if ((findata = readdir(hfind)) == NULL)

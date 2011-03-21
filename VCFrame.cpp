@@ -1,6 +1,5 @@
 // VCFrame.cpp
 
-#include "wx/wxprec.h"
 #include "VCFrame.h"
 #include "VCApp.h"
 #include "SolidView.h"
