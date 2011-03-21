@@ -23,8 +23,8 @@ CControlView::CControlView(wxWindow *parent):
 	wxPanel* panel = new wxPanel(this, wxID_ANY);
 
     // create buttons
-    wxButton *button1 = new wxButton(panel, ID_BUTTON1, "test1");
-    wxButton *button2 = new wxButton(panel, ID_BUTTON2, "test2");
+    wxButton *button1 = new wxButton(panel, ID_BUTTON1, _T("test1"));
+    wxButton *button2 = new wxButton(panel, ID_BUTTON2, _T("test2"));
 
     wxBoxSizer *mainsizer = new wxBoxSizer( wxVERTICAL );
 

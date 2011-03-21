@@ -1,25 +1,17 @@
 // SolidView.cpp
-#include "wx/wxprec.h"
 #include "SolidView.h"
 #include "voxlap5.h"
-#include "VCApp.h"
-#include "VCFrame.h"
 #include "Tool.h"
+#include <math.h>
 
 extern void doframe ();
 extern long xres, yres, colbits, fullscreen, maxpages;
 extern long initdirectdraw (long daxres, long dayres, long dacolbits);
 extern void uninitdirectdraw ();
 
-BEGIN_EVENT_TABLE(CSolidView, wxWindow)
-    EVT_PAINT(CSolidView::OnPaint)
-    EVT_SIZE(CSolidView::OnSize)
-    EVT_MOUSE_EVENTS(CSolidView::OnMouse)
-END_EVENT_TABLE()
+CSolidView solid_view;
 
-// Define a constructor for my canvas
-CSolidView::CSolidView(wxWindow *parent, const wxPoint& pos, const wxSize& size):
- wxWindow(parent, wxID_ANY, pos, size, wxTRANSPARENT_WINDOW),m_construction_finished(false), m_initdirectdraw_called(false), m_new_xres(0), m_new_yres(0)
+CSolidView::CSolidView()
 {
 	m_lens_point[0] = 256.0;
 	m_lens_point[1] = 512.0;
@@ -30,59 +22,34 @@ CSolidView::CSolidView(wxWindow *parent, const wxPoint& pos, const wxSize& size)
 	m_vertical[0] = 0.707;
 	m_vertical[1] = 0.0;
 	m_vertical[2] = 0.707;
+	m_size = Point(0, 0);
+	m_refresh_wanted = false;
 }
 
-// Define the repainting behaviour
-void CSolidView::OnPaint(wxPaintEvent& event)
+void CSolidView::OnPaint()
 {
-	if(m_construction_finished)
-	{
-		if(m_new_xres > 0 && m_new_yres > 0 && ((m_new_xres != xres) || (m_new_yres != yres)))
+		if(m_size.x > 0 && m_size.y > 0 && ((m_size.x != xres) || (m_size.y != yres)))
 		{
 			uninitdirectdraw();
-			xres = m_new_xres;
-			yres = m_new_yres;
+			xres = m_size.x;
+			yres = m_size.y;
 			initdirectdraw(xres,yres, colbits);
 			m_initdirectdraw_called = true;
 		}
 		if(m_initdirectdraw_called)
 		{
-			if(wxGetApp().m_current_tool->m_cutting)
-			{
-				lpoint3d p0, p1;
-				p0.x = wxGetApp().m_current_tool->m_p0[0];
-				p0.y = wxGetApp().m_current_tool->m_p0[1];
-				p0.z = 256 - wxGetApp().m_current_tool->m_p0[2];
-				p1.x = wxGetApp().m_current_tool->m_p1[0];
-				p1.y = wxGetApp().m_current_tool->m_p1[1];
-				p1.z = 256 - wxGetApp().m_current_tool->m_p1[2];
-				long cr = wxGetApp().m_current_tool->m_r;
-				setcylinder(&p0, &p1, cr, -1, 0);
-				updatevxl();
-			}
-
+			//setcylinder(&p0, &p1, cr, -1, 0);
+			//updatevxl();
 			doframe();
 		}
-	}
 
-	event.Skip();
+		this->m_refresh_wanted = false;
 }
 
-void CSolidView::OnSize(wxSizeEvent& event)
+void CSolidView::OnSize(int x, int y)
 {
-	if(!m_construction_finished)
-	{
-		m_new_xres = 0;
-		m_new_yres = 0;
-	}
-	else
-	{
-		if(event.GetSize().GetWidth() > 0)m_new_xres = event.GetSize().GetWidth();
-		if(event.GetSize().GetHeight() > 0)m_new_yres = event.GetSize().GetHeight();
-	}
-
-	event.Skip();
-	//Refresh();
+	if(x > 0)m_size.x = x;
+	if(y > 0)m_size.y = y;
 }
 
 void crossp(const double* a, const double* b, double* ab)
@@ -149,24 +116,18 @@ void CSolidView::LimitCamera(){
 	norm(m_vertical);
 }
 
-void CSolidView::OnMouse( wxMouseEvent& event )
+void CSolidView::OnMouse( MouseEvent& event )
 {
-	if(event.Entering()){
-		SetFocus(); // so middle wheel works
-	}
-
 	if(event.LeftDown() || event.MiddleDown() || event.RightDown())
 	{
-		m_button_down_point = wxPoint(event.GetX(), event.GetY());
+		m_button_down_point = Point(event.GetX(), event.GetY());
 		m_current_point = m_button_down_point;
 		//StoreViewPoint();
 		m_initial_point = m_button_down_point;
 	}
 	else if(event.Dragging())
 	{
-		wxPoint point_diff;
-		point_diff.x = event.GetX() - m_current_point.x;
-		point_diff.y = event.GetY() - m_current_point.y;
+		Point point_diff = Point(event.GetX(), event.GetY()) - m_current_point;
 
 		if(event.LeftIsDown())
 		{
@@ -174,8 +135,7 @@ void CSolidView::OnMouse( wxMouseEvent& event )
 			else if(point_diff.x < -100)point_diff.x = -100;
 			if(point_diff.y > 100)point_diff.y = 100;
 			else if(point_diff.y < -100)point_diff.y = -100;
-			wxSize size = GetClientSize();
-			double c=(size.GetWidth()+size.GetHeight())/20;
+			double c=(m_size.x+m_size.y)/20;
 
 			double ang_x = point_diff.x/c;
 			double ang_y = point_diff.y/c;
@@ -233,8 +193,8 @@ void CSolidView::OnMouse( wxMouseEvent& event )
 			LimitCamera();
 		}
 
-		Refresh(0);
-		m_current_point = wxPoint(event.GetX(), event.GetY());
+		Refresh();
+		m_current_point = Point(event.GetX(), event.GetY());
 	}
 
 	if(event.GetWheelRotation() != 0)
@@ -242,10 +202,8 @@ void CSolidView::OnMouse( wxMouseEvent& event )
 		double wheel_value = (double)(event.GetWheelRotation());
 		double multiplier = -wheel_value /1000.0;
 		ViewScale(multiplier);
-		Refresh(0);
+		Refresh();
 	}
-
-	event.Skip();
 }
 
 void get_canvas_camera(dpoint3d &ipos, dpoint3d &istr, dpoint3d &ihei, dpoint3d &ifor)
@@ -255,16 +213,16 @@ void get_canvas_camera(dpoint3d &ipos, dpoint3d &istr, dpoint3d &ihei, dpoint3d 
 	//ihe: camera's unit DOWN vector
 	//ifo: camera's unit FORWARD vector
 
-	ipos.x = 1024 -wxGetApp().m_frame->m_solid_view->m_lens_point[0];
-	ipos.y = wxGetApp().m_frame->m_solid_view->m_lens_point[1];
-	ipos.z = 256.0 - wxGetApp().m_frame->m_solid_view->m_lens_point[2];
+	ipos.x = 1024 -solid_view.m_lens_point[0];
+	ipos.y = solid_view.m_lens_point[1];
+	ipos.z = 256.0 - solid_view.m_lens_point[2];
 
 	double f[3];
-	for(int i = 0; i<3; i++)f[i] = wxGetApp().m_frame->m_solid_view->m_target_point[i] - wxGetApp().m_frame->m_solid_view->m_lens_point[i];
+	for(int i = 0; i<3; i++)f[i] = solid_view.m_target_point[i] - solid_view.m_lens_point[i];
 	norm(f);
 
 	double down[3];
-	for(int i = 0; i<3; i++)down[i] = -wxGetApp().m_frame->m_solid_view->m_vertical[i];
+	for(int i = 0; i<3; i++)down[i] = -solid_view.m_vertical[i];
 
 	double right[3];
 	crossp(down, f, right);

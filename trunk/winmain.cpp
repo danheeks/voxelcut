@@ -42,6 +42,9 @@ long xres = 1680, yres = 1050, colbits = 8, fullscreen = 0, maxpages = 8;
 
 //======================== CPU detection code begins ========================
 
+const char* Ttc(const wchar_t* str);
+const wchar_t* Ctt(const char* str);
+
 static long cputype = 0;
 static OSVERSIONINFO osvi;
 
@@ -1571,19 +1574,19 @@ long initdirectdraw (long daxres, long dayres, long dacolbits)
 					long i, j;
 
 					validmodecnt = getvalidmodelist(&validmodelist);
-					wsprintf(vidlistbuf,"Valid fullscreen %d-bit DirectDraw modes:\n",colbits);
+					wsprintfA(vidlistbuf,"Valid fullscreen %d-bit DirectDraw modes:\n",colbits);
 					j = 0;
 					for(i=0;i<validmodecnt;i++)
 						if (validmodelist[i].c == colbits)
 						{
-							wsprintf(buf,"/%dx%d\n",validmodelist[i].x,validmodelist[i].y);
+							wsprintfA(buf,"/%dx%d\n",validmodelist[i].x,validmodelist[i].y);
 							strcat(vidlistbuf,buf);
 							j++;
 						}
 					if (!j) strcat(vidlistbuf,"None! Try a different bit depth.");
 
-					wsprintf(buf,"initdirectdraw failed: 0x%x",hr);
-					MessageBox(ghwnd,vidlistbuf,buf,MB_OK);
+					wsprintfA(buf,"initdirectdraw failed: 0x%x",hr);
+					MessageBox(NULL, Ctt(vidlistbuf), Ctt(buf), MB_OK);
 
 					uninitdirectdraw();
 					return(0);
@@ -1682,8 +1685,8 @@ long initdirectdraw (long daxres, long dayres, long dacolbits)
 		}
 	}
 	uninitdirectdraw();
-	wsprintf(buf,"initdirectdraw failed: 0x%08lx",hr);
-	MessageBox(ghwnd,buf,"ERROR",MB_OK);
+	wsprintfA(buf,"initdirectdraw failed: 0x%08lx",hr);
+	MessageBox(NULL, Ctt(buf), Ctt("error"), MB_OK);
 	return(0);
 }
 
@@ -2056,7 +2059,7 @@ void evilquit (const char *str) //Evil because this function makes awful assumpt
 	stopdirectdraw();
 	ddflip2gdi();
 #endif
-	if (str) MessageBox(ghwnd,str,"fatal error!",MB_OK);
+	if (str) MessageBox(NULL, Ctt(str), Ctt("error"), MB_OK);
 
 #ifndef NODRAW
 	uninitdirectdraw();

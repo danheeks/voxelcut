@@ -23,8 +23,8 @@
 			Name="Debug|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="1"
-			CharacterSet="0"
+			ConfigurationType="2"
+			CharacterSet="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -49,8 +49,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(ProjectDir)&quot;;&quot;$(DXSDK_DIR)\Include&quot;;&quot;$(WXWIN)\lib\vc_lib\mswd&quot;;&quot;$(WXWIN)\include&quot;;&quot;$(PYTHON_INCLUDE)&quot;"
-				PreprocessorDefinitions="WIN32;_DEBUG;_CRT_SECURE_NO_WARNINGS;__WXMSW__;__WXDEBUG__;_WINDOWS;NOPCH;WNT"
+				AdditionalIncludeDirectories="&quot;$(ProjectDir)&quot;;&quot;$(DXSDK_DIR)\Include&quot;;&quot;$(WXWIN)\lib\vc_dll\mswud&quot;;&quot;$(WXWIN)\include&quot;;&quot;$(PYTHON_INCLUDE)&quot;;&quot;$(WXWIN)\include\msvc&quot;"
+				PreprocessorDefinitions="WIN32;_DEBUG;_CRT_SECURE_NO_WARNINGS;__WXMSW__;__WXDEBUG__;_WINDOWS;NOPCH;WNT;WXUSINGDLL"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -74,10 +74,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="ddraw.lib v5.obj wxmsw28d_core.lib wxbase28d.lib wxtiffd.lib wxjpegd.lib wxpngd.lib wxzlibd.lib wxregexd.lib wxexpatd.lib winmm.lib comctl32.lib rpcrt4.lib wsock32.lib odbc32.lib $(PYTHON_LIB)"
+				AdditionalDependencies="ddraw.lib v5.obj wxmsw28ud_core.lib wxbase28ud.lib wxtiffd.lib wxjpegd.lib wxpngd.lib wxzlibd.lib wxregexd.lib wxexpatd.lib winmm.lib comctl32.lib rpcrt4.lib wsock32.lib odbc32.lib $(PYTHON_LIB)"
 				OutputFile=".\VoxelCut.exe"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="&quot;C:\Program Files\Microsoft DirectX SDK (March 2008)\Lib\x86&quot;;$(WXWIN)\lib\vc_lib"
+				AdditionalLibraryDirectories="&quot;C:\Program Files\Microsoft DirectX SDK (March 2008)\Lib\x86&quot;;&quot;$(WXWIN)\lib\vc_dll&quot;"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
@@ -110,8 +110,8 @@
 			Name="Release|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="1"
-			CharacterSet="0"
+			ConfigurationType="2"
+			CharacterSet="1"
 			WholeProgramOptimization="1"
 			>
 			<Tool
@@ -134,8 +134,11 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;$(ProjectDir)&quot;;&quot;$(DXSDK_DIR)\Include&quot;;&quot;$(WXWIN)\include&quot;;&quot;$(PYTHON_INCLUDE)&quot;;&quot;$(WXWIN)\lib\vc_lib\msw&quot;"
-				PreprocessorDefinitions="WIN32;NDEBUG;_CRT_SECURE_NO_WARNINGS;__WXMSW__"
+				Optimization="0"
+				EnableIntrinsicFunctions="true"
+				WholeProgramOptimization="false"
+				AdditionalIncludeDirectories="&quot;$(ProjectDir)&quot;;&quot;$(DXSDK_DIR)\Include&quot;;&quot;$(PYTHON_INCLUDE)&quot;;&quot;$(BOOST_PYTHON_PATH)&quot;"
+				PreprocessorDefinitions="WIN32;NDEBUG;_CRT_SECURE_NO_WARNINGS;__BOOST_PYTHON_NO_LIB__;BOOST_PYTHON_STATIC_LIB=1;BOOST_LIB_DIAGNOSTIC"
 				RuntimeLibrary="2"
 				DefaultCharIsUnsigned="true"
 				RuntimeTypeInfo="false"
@@ -155,10 +158,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="ddraw.lib v5.obj wxmsw28_core.lib wxbase28.lib wxtiff.lib wxjpeg.lib wxpng.lib wxzlib.lib wxregex.lib wxexpat.lib winmm.lib comctl32.lib rpcrt4.lib wsock32.lib odbc32.lib $(PYTHON_LIB)"
-				OutputFile=".\VoxelCut.exe"
+				AdditionalDependencies="ddraw.lib v5.obj winmm.lib comctl32.lib rpcrt4.lib wsock32.lib odbc32.lib $(PYTHON_LIB)"
+				OutputFile=".\voxelcut.pyd"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="&quot;C:\Program Files\Microsoft DirectX SDK (March 2008)\Lib\x86&quot;;$(WXWIN)\lib\vc_lib"
+				AdditionalLibraryDirectories="&quot;C:\Program Files\Microsoft DirectX SDK (March 2008)\Lib\x86&quot;;&quot;$(BOOST_PYTHON_PATH)/lib&quot;"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -194,22 +197,6 @@
 	</References>
 	<Files>
 		<File
-			RelativePath=".\ControlButton.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\ControlButton.h"
-			>
-		</File>
-		<File
-			RelativePath=".\ControlView.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\ControlView.h"
-			>
-		</File>
-		<File
 			RelativePath=".\kplib.cpp"
 			>
 		</File>
@@ -243,36 +230,6 @@
 		<File
 			RelativePath=".\sysmain.h"
 			>
-		</File>
-		<File
-			RelativePath=".\VCApp.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\VCApp.h"
-			>
-			<FileConfiguration
-				Name="Debug|Win32"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-				/>
-			</FileConfiguration>
-		</File>
-		<File
-			RelativePath=".\VCFrame.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\VCFrame.h"
-			>
-			<FileConfiguration
-				Name="Debug|Win32"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-				/>
-			</FileConfiguration>
 		</File>
 		<File
 			RelativePath=".\VoxelCut.cpp"

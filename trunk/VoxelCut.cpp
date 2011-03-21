@@ -13,6 +13,9 @@ using namespace std;
 
 extern void get_canvas_camera(dpoint3d &ipos, dpoint3d &istr, dpoint3d &ihei, dpoint3d &ifor);
 
+const char* Ttc(const wchar_t* str);
+const wchar_t* Ctt(const char* str);
+
 //Player position variables:
 #define NOCLIPRAD 7
 #define CLIPRAD 5
@@ -27,6 +30,8 @@ struct draw_point
 };
 
 std::list<draw_point> points_to_draw;
+
+extern void draw_callback();
 
 long initapp (long argc, char **argv)
 {
@@ -58,7 +63,7 @@ long initapp (long argc, char **argv)
 		if(!ifs){
 			char mess[1024];
 			sprintf(mess, "couldn't load stl file - %s", stlfile);
-			MessageBox(NULL, mess, "Error!", MB_OK);
+			MessageBox(NULL, Ctt(mess), Ctt("error"), MB_OK);
 			return -1;
 		}
 
@@ -126,6 +131,8 @@ void doframe ()
 		setcamera(&ipos,&istr,&ihei,&ifor,xres*.5f,yres*.5f,xres*fov); // .5f
 		
 		opticast();
+
+		draw_callback();
 
 		stopdirectdraw();
 		nextpage();
