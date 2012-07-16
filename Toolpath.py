@@ -123,10 +123,12 @@ class Toolpath:
                         area.set_units(0.05)
                         curve = area.Curve()
                         curve.append(area.Point(curx, cury))
-                        if (newx > curx) != (arc > 0):
-                            j = -j
-                        if (newy > cury) != (arc < 0):
-                            i = -i
+                        # next 4 lines were for Bridgeport.
+                        # this only works for LinuxCNC now
+                        #if (newx > curx) != (arc > 0):
+                        #    j = -j
+                        #if (newy > cury) != (arc < 0):
+                        #    i = -i
                         curve.append(area.Vertex(arc, area.Point(newx, newy), area.Point(curx+i, cury+j)))
                         curve.UnFitArcs()
                         for span in curve.GetSpans():

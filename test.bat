@@ -1,3 +1,3 @@
-%HOMEDRIVE%\python26\python.exe test.py
+%HOMEDRIVE%\python26\python.exe simulate.py
 
 pause
