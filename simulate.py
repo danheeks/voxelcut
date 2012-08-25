@@ -6,6 +6,7 @@ from GraphicsCanvas import myGLCanvas
 from ControlView import ControlView
 from Toolpath import toolpath
 from coords import Coords
+import tempfile
 
 def OnTimer(event):
     if toolpath.running:
@@ -46,6 +47,6 @@ frame.Center()
 aui_manager.Update()
 frame.Show()
 
-execfile('initial.py')
+execfile(tempfile.gettempdir()+'/initial.py')
 
 app.MainLoop()

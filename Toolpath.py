@@ -109,6 +109,9 @@ class Toolpath:
                     j = float(eval(word[1:]))
                 elif word[0] == 'T':
                     self.current_tool = eval(word[1:])
+                    if (curx != None) and (cury != None) and (curz != None):
+                        self.add_line(Point(curx, cury, curz), Point(curx, cury, 30.0))
+                        curz = 30.0
                 elif word[0] == ';' : break
 
             if move:
