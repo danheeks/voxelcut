@@ -13,15 +13,7 @@ CSolidView solid_view;
 
 CSolidView::CSolidView()
 {
-	m_lens_point[0] = 256.0;
-	m_lens_point[1] = 512.0;
-	m_lens_point[2] = 384.0;
-	m_target_point[0] = 512.0;
-	m_target_point[1] = 512.0;
-	m_target_point[2] = 128.0;
-	m_vertical[0] = 0.707;
-	m_vertical[1] = 0.0;
-	m_vertical[2] = 0.707;
+	ViewReset();
 	m_size = Point(0, 0);
 	m_refresh_wanted = false;
 }
@@ -204,6 +196,19 @@ void CSolidView::OnMouse( MouseEvent& event )
 		ViewScale(multiplier);
 		Refresh();
 	}
+}
+
+void CSolidView::ViewReset()
+{
+	m_lens_point[0] = 256.0;
+	m_lens_point[1] = 512.0;
+	m_lens_point[2] = 384.0;
+	m_target_point[0] = 512.0;
+	m_target_point[1] = 512.0;
+	m_target_point[2] = 128.0;
+	m_vertical[0] = 0.707;
+	m_vertical[1] = 0.0;
+	m_vertical[2] = 0.707;
 }
 
 void get_canvas_camera(dpoint3d &ipos, dpoint3d &istr, dpoint3d &ihei, dpoint3d &ifor)

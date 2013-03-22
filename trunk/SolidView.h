@@ -37,6 +37,7 @@ public:
 	void OnSize(int x, int y);
 	void OnMouse( MouseEvent& event );
 	void Refresh(){ m_refresh_wanted = true; }
+	void ViewReset();
 };
 
 extern CSolidView solid_view;

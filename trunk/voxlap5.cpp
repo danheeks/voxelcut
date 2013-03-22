@@ -6672,6 +6672,56 @@ void setellipsoid (lpoint3d *hit, lpoint3d *hit2, long hitrad, long dacol, long 
 	updatebbox(vx5.minx,vx5.miny,vx5.minz,vx5.maxx,vx5.maxy,vx5.maxz,dacol);
 }
 
+void setcone (lpoint3d *hit, lpoint3d *hit2, long hitrad, long rad2, long dacol, long bakit)
+{
+	void (*modslab)(long *, long, long);
+	long x, y, xs, ys, zs, xe, ye, ze;
+	float a, b, c, d, e, f, g, h, r, t, u, Za, Zb, fx0, fy0, fz0, fx1, fy1, fz1;
+
+	xs = min(hit->x,hit2->x)-hitrad; xs = max(xs,0);
+	ys = min(hit->y,hit2->y)-hitrad; ys = max(ys,0);
+	zs = min(hit->z,hit2->z)-hitrad; zs = max(zs,0);
+	xe = max(hit->x,hit2->x)+hitrad; xe = min(xe,VSID-1);
+	ye = max(hit->y,hit2->y)+hitrad; ye = min(ye,VSID-1);
+	ze = max(hit->z,hit2->z)+hitrad; ze = min(ze,MAXZDIM-1);
+	vx5.minx = xs; vx5.maxx = xe+1;
+	vx5.miny = ys; vx5.maxy = ye+1;
+	vx5.minz = zs; vx5.maxz = ze+1;
+	if ((xs > xe) || (ys > ye) || (zs > ze))
+		{ if (bakit) voxbackup(xs,ys,xs,ys,bakit); return; }
+
+	fx0 = (float)hit->x; fy0 = (float)hit->y; fz0 = (float)hit->z;
+	fx1 = (float)hit2->x; fy1 = (float)hit2->y; fz1 = (float)hit2->z;
+
+	r = (fx1-fx0)*(fx1-fx0) + (fy1-fy0)*(fy1-fy0) + (fz1-fz0)*(fz1-fz0);
+	r = sqrt((float)hitrad*(float)hitrad + r*.25);
+	c = fz0*fz0 - fz1*fz1; d = r*r*-4; e = d*4;
+	f = c*c + fz1*fz1 * e; g = c + c; h = (fz1-fz0)*2; c = c*h - fz1*e;
+	Za = -h*h - e; if (Za <= 0) { if (bakit) voxbackup(xs,ys,xs,ys,bakit); return; }
+	u = 1 / Za;
+
+	if (vx5.colfunc == jitcolfunc) vx5.amount = 0x70707;
+
+	if (dacol == -1) modslab = delslab; else modslab = insslab;
+
+	if (bakit) voxbackup(xs,ys,xe+1,ye+1,bakit);
+
+	for(y=ys;y<=ye;y++)
+		for(x=xs;x<=xe;x++)
+		{
+			a = (x-fx0)*(x-fx0) + (y-fy0)*(y-fy0);
+			b = (x-fx1)*(x-fx1) + (y-fy1)*(y-fy1);
+			t = a-b+d; Zb = t*h + c;
+			t = ((t+g)*t + b*e + f)*Za + Zb*Zb; if (t <= 0) continue;
+			t = sqrt(t);
+			ftol((Zb - t)*u,&zs); if (zs < 0) zs = 0;
+			ftol((Zb + t)*u,&ze); if (ze > MAXZDIM) ze = MAXZDIM;
+			modslab(scum2(x,y),zs,ze);
+		}
+	scum2finish();
+	updatebbox(vx5.minx,vx5.miny,vx5.minz,vx5.maxx,vx5.maxy,vx5.maxz,dacol);
+}
+
 	//Draws a cylinder, given: 2 points, a radius, and a color
 	//Code mostly optimized - original code from CYLINDER.BAS:drawcylinder
 void setcylinder (lpoint3d *p0, lpoint3d *p1, long cr, long dacol, long bakit)
