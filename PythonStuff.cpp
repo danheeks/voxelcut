@@ -115,6 +115,21 @@ static void remove_cylinder(int x, int y, int z, int x2, int y2, int z2, int r)
 	p2.y = 1024-x2;
 	p2.z = 256 - z2;
 	setcylinder(&p1, &p2, r, -1, 0);
+	//setellipsoid(&p1, &p2, r, -1, 0);
+	updatevxl();
+}
+
+static void remove_cone(int x, int y, int z, int x2, int y2, int z2, int r)
+{
+	lpoint3d p1;
+	p1.x = 1024-y;
+	p1.y = 1024-x;
+	p1.z = 256 - z;
+	lpoint3d p2;
+	p2.x = 1024-y2;
+	p2.y = 1024-x2;
+	p2.z = 256 - z2;
+	setellipsoid(&p1, &p2, r, -1, 0);
 	updatevxl();
 }
 
@@ -136,6 +151,11 @@ static void OnSize(int x, int y)
 static void OnMouse(MouseEvent &e)
 {
 	solid_view.OnMouse(e);
+}
+
+static void ViewReset()
+{
+	solid_view.ViewReset();
 }
 
 static void Init(int hwnd)
@@ -226,6 +246,7 @@ BOOST_PYTHON_MODULE(voxelcut)
 	bp::def("remove_line", remove_line);
 	bp::def("add_cylinder", add_cylinder);
 	bp::def("remove_cylinder", remove_cylinder);
+	bp::def("remove_cone", remove_cone);
 	bp::def("set_current_color", set_current_color);
 	bp::def("drawpoint3d", Pdrawpoint3d);
 	bp::def("drawline3d", Pdrawline3d);
@@ -235,4 +256,5 @@ BOOST_PYTHON_MODULE(voxelcut)
 	bp::def("OnMouse", OnMouse);
 	bp::def("Init", Init);
 	bp::def("refresh_wanted", refresh_wanted);
+	bp::def("ViewReset", ViewReset);
 }

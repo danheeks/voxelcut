@@ -242,6 +242,7 @@ extern void setcube (long, long, long, long);
 extern void clearcolumn (long px, long py, long pz, long height);
 extern void setsphere (lpoint3d *, long, long);
 extern void setellipsoid (lpoint3d *, lpoint3d *, long, long, long);
+extern void setcone (lpoint3d *, lpoint3d *, long, long, long, long);
 extern void setcylinder (lpoint3d *, lpoint3d *, long, long, long);
 extern void setrect (lpoint3d *, lpoint3d *, long);
 extern void settri (point3d *, point3d *, point3d *, long);
