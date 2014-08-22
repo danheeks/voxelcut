@@ -1,2 +1,2 @@
 .\python.exe simulate.py
-pause
+#pause
