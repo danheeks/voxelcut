@@ -9,6 +9,7 @@ from Toolpath import Toolpath
 from coords import Coords
 import tempfile
 from area import *
+from Toolpath import Tool
 
 def OnTimer(event):
     if toolpath.running:
@@ -26,8 +27,8 @@ class VFrame(wx.Frame):
         app.ExitMainLoop()
 
 def DoExecFile():
-    #execfile(tempfile.gettempdir()+'/initial.py')
-    execfile('initial.py')
+    execfile(tempfile.gettempdir()+'/initial.py')
+    #execfile('initial.py')
 
 def OnReset():
     voxelcut.Init(graphics_view.GetHandle())
